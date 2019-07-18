@@ -1,0 +1,50 @@
+---
+title: "MOBILE MONEY RWANDA"
+author: "Christopher okoth"
+date: "7/18/2019"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(tidyr)
+```
+## CODING CLUB ASSIGNMENT
+
+```{r echo=TRUE, warning=FALSE}
+#load the data 
+library(readr)
+
+data<-read_csv("mobilemoney_data.csv",col_names=TRUE,cols(district=col_factor(),urban=col_factor(),gender=col_factor()))
+
+```
+## Introduction
+The data was collected on the use of mobile money services and the experiences of mobile money customers in three districts of Rwanda. The dataset has been provided and you have been asked to write a short summary outlining key findings from the project. You should perform all the statistical analysis required and write up the key findings. You should remember that the target audiences do not have a statistical background
+
+
+## Distribution of gender 
+```{r echo=TRUE}
+demographics<-read_csv("demographics.csv",col_names = TRUE)
+head(demographics)
+table(demographics$gender)
+
+ggplot(demographics,aes(x=gender))+geom_bar(aes(x=gender))+theme_economist()+geom_bar(fill="red")
+
+```
+The bar chart above show that 1458 female and 1051 male were involved in the study.
+
+## scatter plot for age against household 
+```{r echo=TRUE}
+ggplot(data,aes(x=age,y=hh_members))+geom_point()+facet_wrap(.~gender+highest_grade_completed)+theme_economist()
+
+```
+## The distribution of types of accounts
+```{r echo=TRUE}
+data%>%group_by(account_type)%>%summarise(number=n())%>%mutate(percentage=number/sum(number)*100)%>%arrange(desc(percentage))
+```
+
+The table above shows that mobile money and VSLA account are the most used with 32.88 and 26.66 percent of people usin it. The lowest bank account used is online bank account.
